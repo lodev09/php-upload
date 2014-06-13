@@ -210,6 +210,9 @@ switch (strtolower($extetion)) {
 ...
 // you can set your own error message by specifying the type of error
 $file->set_error_message(File::UPLOAD_ERR_EXTENSION_FILTER, 'File type is not allowed');
+
+// you can get the full exif data using exif_read_data in php
+$exif = $file->get_exif();
 ...
 ```
 
