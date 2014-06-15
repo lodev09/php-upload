@@ -124,7 +124,7 @@ class File {
 	private $_validations = array(
 		'extension' => array(),
 		'category' => array(),
-		'size' => array(),
+		'size' => 200,
 		'custom' => null
 	);
 
@@ -200,6 +200,7 @@ class File {
             if (!is_array($array_value) || !isset($array_value[$set_to_key_if_fail])) {
                 if (isset($default_structure[$set_to_key_if_fail]))
                     $default_structure[$set_to_key_if_fail] = $array_value;
+
                 return $default_structure;
             }
         }
@@ -270,12 +271,12 @@ class File {
 		$get_actual_size = function($size, $unit) {
 			switch (strtolower($unit)) {
 				case 'mb':
-					$size = $size * 1000 * 1000;
+					$size = $size * 1048576;
 					break;
 				case 'kb':
-					$size = $size * 1000;
+					$size = $size * 1024;
 				case 'gb':
-					$size = $size * 1000 * 1000 * 1000;
+					$size = $size * 1073741824;
 			}
 			return $size;
 		};
@@ -426,6 +427,30 @@ class File {
 	 */
 	public function get_base64() {
 		return base64_encode(file_get_contents($this->tmp_name));
+	}
+
+	/**
+	 * format the size of the file to a readable string
+	 * @return string formatted file size
+	 */
+	public function format_size() {
+		$bytes = $this->size;
+
+        if ($bytes >= 1073741824) {
+            $format = number_format($bytes / 1073741824, 2) . ' GB';
+        } elseif ($bytes >= 1048576) {
+            $format = number_format($bytes / 1048576, 2) . ' MB';
+        } elseif ($bytes >= 1024) {
+            $format = number_format($bytes / 1024, 2) . ' KB';
+        } elseif ($bytes > 1) {
+            $format = $bytes . ' bytes';
+        } elseif ($bytes == 1) {
+            $format = $bytes . ' byte';
+        } else {
+            $format = '0 bytes';
+        }
+
+        return $format;
 	}
 
 }
