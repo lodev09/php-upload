@@ -1,6 +1,6 @@
 <?php
-
-require_once('lib/class.fileupload.php');
+require_once('lib/class.file.php');
+require_once('lib/class.upload.php');
 require_once('lib/class.exif.php');
 
 if (isset($_FILES['files'])) {
@@ -10,7 +10,7 @@ if (isset($_FILES['files'])) {
 	);
 
 	// create new instance
-	$upload = new FileUpload($_FILES['files'], $validations);
+	$upload = new Upload($_FILES['files'], $validations);
 
 	// for each file
 	foreach ($upload->files as $file) {
