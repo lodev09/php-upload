@@ -4,6 +4,68 @@ class File {
 
 	public $_exif = null;
 
+	private $_mime_types = array(
+        '.txt' => 'text/plain',
+        '.htm' => 'text/html',
+        '.html' => 'text/html',
+        '.php' => 'text/html',
+        '.css' => 'text/css',
+        '.js' => 'application/javascript',
+        '.json' => 'application/json',
+        '.xml' => 'application/xml',
+        '.swf' => 'application/x-shockwave-flash',
+        '.flv' => 'video/x-flv',
+
+        // images
+        '.png' => 'image/png',
+        '.jpe' => 'image/jpeg',
+        '.jpeg' => 'image/jpeg',
+        '.jpg' => 'image/jpeg',
+        '.gif' => 'image/gif',
+        '.bmp' => 'image/bmp',
+        '.ico' => 'image/vnd.microsoft.icon',
+        '.tiff' => 'image/tiff',
+        '.tif' => 'image/tiff',
+        '.svg' => 'image/svg+xml',
+        '.svgz' => 'image/svg+xml',
+
+        // archives
+        '.zip' => 'application/zip',
+        '.rar' => 'application/x-rar-compressed',
+        '.exe' => 'application/x-msdownload',
+        '.msi' => 'application/x-msdownload',
+        '.cab' => 'application/vnd.ms-cab-compressed',
+
+        // audio/video
+        '.mp3' => 'audio/mpeg',
+        '.qt' => 'video/quicktime',
+        '.mov' => 'video/quicktime',
+        '.wmv' => 'video/x-ms-wmv',
+        '.mp4' => 'video/mp4',
+        '.mp4a' => 'audio/mp4',
+        '.mpeg' => 'video/mpeg',
+
+        // adobe
+        '.pdf' => 'application/pdf',
+        '.psd' => 'image/vnd.adobe.photoshop',
+        '.ai' => 'application/postscript',
+        '.eps' => 'application/postscript',
+        '.ps' => 'application/postscript',
+        '.tiff' => 'image/tiff',
+
+        // ms office
+        '.doc' => 'application/msword',
+        '.rtf' => 'application/rtf',
+        '.xls' => 'application/vnd.ms-excel',
+        '.xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        '.docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        '.ppt' => 'application/vnd.ms-powerpoint',
+
+        // open office
+        '.odt' => 'application/vnd.oasis.opendocument.text',
+        '.ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+    );
+
 	/**
 	 * default structure of the validations array
 	 * @var array
@@ -73,7 +135,7 @@ class File {
 		}
 
 		// see if Exif class exists and if it's an image file
-		if (class_exists('Exif')) {
+		if (class_exists('Exif') && $this->tmp_name) {
 			switch ($this->extension) {
 				case '.jpg':
 				case '.jpeg':
@@ -81,7 +143,6 @@ class File {
 					$this->_exif = new Exif($this->tmp_name);
 					break;
 			}
-			
 		}
 	}
 
@@ -259,7 +320,7 @@ class File {
 	 * get the file info evaluated from the $name property
 	 * @return stdClass  file info
 	 */
-	public function get_info() {
+	public function get_info($icon_prefix = 'octicon') {
 		preg_match('/\.[^\.]+$/i', $this->name, $ext);
         $return = new stdClass;
         $extetion = isset($ext[0]) ? $ext[0] : '';
@@ -272,6 +333,7 @@ class File {
             case ".docx":
             case ".xls":
             case ".xlsx":
+            	$icon = "$icon_prefix $icon_prefix-file-text";
                 $category = 'document';
                 break;
             case ".png":
@@ -282,6 +344,7 @@ class File {
             case ".psd":
             case ".tif":
             case ".tiff":
+            	$icon = "$icon_prefix $icon_prefix-file-media";
                 $category = "image";
                 break;
             case ".mp3":
@@ -289,6 +352,7 @@ class File {
             case ".wma":
             case ".m4a":
             case ".m3u":
+            	$icon = "$icon_prefix $icon_prefix-file-media";
                 $category = "audio";
                 break;
             case ".3g2":
@@ -296,7 +360,7 @@ class File {
             case ".asf":
             case ".asx":
             case ".avi":
-            case ".flv":    
+            case ".flv":
             case ".m4v":
             case ".mov":
             case ".mp4":
@@ -305,14 +369,37 @@ class File {
             case ".swf":
             case ".vob":
             case ".wmv":
+            	$icon = "$icon_prefix $icon_prefix-file-media";
                 $category = "video";
                 break;
+            case ".css":
+            case ".php":
+            case ".php3":
+            case ".sql":
+            case ".cs":
+            case ".html":
+            case ".less":
+            case ".xml":
+            	$icon = "$icon_prefix $icon_prefix-file-code";
+            	$category = "code";
+            	break;
+            case ".zip":
+            case ".gzip":
+            case ".7z":
+            case ".tar":
+            case ".rar":
+            	$icon = "$icon_prefix $icon_prefix-file-zip";
+            	$category = "compressed";
+            	break;
             default:
+            	$icon = "$icon_prefix $icon_prefix-file-binary";
                 $category = "other";
                 break;
         }
+        $return->icon_class = $icon;
         $return->extension = $extetion;
         $return->category = $category;
+        $return->type = isset($this->_mime_types[$extetion]) ? $this->_mime_types[$extetion] : 'application/octet-stream';
         return $return;
 	}
 
