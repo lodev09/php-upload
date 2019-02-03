@@ -5,20 +5,20 @@
  * @author Jovanni Lo
  * @link http://www.lodev09.com
  * @copyright 2014 Jovanni Lo, all rights reserved
- * @license 
+ * @license
  * The MIT License (MIT)
- * Copyright (c) 2014 Jovanni Lo
- * 
+ * Copyright (c) 2019 Jovanni Lo
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,12 +28,14 @@
  * SOFTWARE.
  */
 
+namespace Upload;
+
 class Exif {
 
 	private $_file;
 	private $_exif;
 	public function __construct($filename) {
-		$this->_exif = exif_read_data($filename);
+		$this->_exif = @exif_read_data($filename);
 		if (!$this->_exif) self::_err('Cannot read EXIF data from '.$filename);
 	}
 
@@ -43,6 +45,39 @@ class Exif {
 
 	public function get_data() {
 		return $this->_exif;
+	}
+
+	public function get_orientation() {
+		$ort = isset($this->_exif['Orientation']) ? $this->_exif['Orientation'] : null;
+		switch($ort) {
+			case 1: // nothing
+				return 'nothing';
+				break;
+			case 2: // horizontal flip
+			    return 'horizontal flip';
+				break;
+			case 3: // 180 rotate left
+			    return '180 rotate left';
+				break;
+			case 4: // vertical flip
+			    return 'vertical flip';
+				break;
+			case 5: // vertical flip + 90 rotate right
+			    return 'vertical flip + 90 rotate right';
+				break;
+			case 6: // 90 rotate right
+			    return '90 rotate right';
+				break;
+			case 7: // horizontal flip + 90 rotate right
+			    return 'horizontal flip + 90 rotate right';
+				break;
+			case 8:    // 90 rotate left
+			    return '90 rotate left';
+				break;
+			default:
+				return 'unknown';
+				break;
+		}
 	}
 
 	public function get_gps() {
@@ -81,12 +116,11 @@ class Exif {
 			}
 		};
 
-		$gps_info = new stdClass;
-		$gps_info->lat = isset($this->_exif['GPSLatitude']) ? $gps($this->_exif['GPSLatitude'], $this->_exif['GPSLatitudeRef']) : 0;
-		$gps_info->lng = isset($this->_exif['GPSLongitude']) ? $gps($this->_exif['GPSLongitude'], $this->_exif['GPSLongitudeRef']) : 0;
-		$gps_info->time = $time();
-		
-		return $gps_info;
+		return [
+			'lat' => isset($this->_exif['GPSLatitude']) ? $gps($this->_exif['GPSLatitude'], $this->_exif['GPSLatitudeRef']) : 0,
+			'lng' => isset($this->_exif['GPSLongitude']) ? $gps($this->_exif['GPSLongitude'], $this->_exif['GPSLongitudeRef']) : 0,
+			'time' => $time()
+		];
 	}
 
 }

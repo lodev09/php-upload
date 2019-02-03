@@ -1,0 +1,24 @@
+{
+    "name": "lodev09/php-upload",
+    "description": "A very simple yet useful helper class to handle PHP file uploads.",
+    "homepage": "https://github.com/lodev09/php-upload",
+    "license": "MIT",
+    "keywords": [
+        "php", "class", "files", "uploads", "php-upload"
+    ],
+    "authors": [
+        {
+            "name": "Jovanni Lo",
+            "email": "lodev09@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "lodev09/php-util": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Upload\\": "src/"
+        }
+    }
+}
