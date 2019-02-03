@@ -11,7 +11,7 @@ A very simple yet useful helper class to handle PHP file uploads.
 
 ## Installation
 ```term
-$ composer require lodev09/php-fileupload
+$ composer require lodev09/php-upload
 ```
 
 ## Usage
