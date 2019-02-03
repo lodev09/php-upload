@@ -29,6 +29,7 @@
  */
 
 namespace Upload;
+use \Common\Util;
 
 class File {
 
