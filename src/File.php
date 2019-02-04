@@ -242,12 +242,18 @@ class File {
 
 		// filter extension
 		if ($this->_validations['extensions']) {
+			$extensions = $this->_validations['extensions'];
 			$def_ext_filter = [
 				'is' => [],
 				'not' => [],
 				'message' => '[extension: '.$this->extension.'] '.$this->_error_messages[self::UPLOAD_ERR_EXTENSION_FILTER]
 			];
-			$ext_filter = Util::set_values($def_ext_filter, $this->_validations['extensions'], 'is');
+
+			if (is_array($extensions) && is_int(key($extensions))) {
+				$extensions['is'] = $extensions;
+			}
+
+			$ext_filter = Util::set_values($def_ext_filter, $extensions, 'is');
 			$this->set_error_message(self::UPLOAD_ERR_EXTENSION_FILTER, $ext_filter['message']);
 
 			if (!is_array($ext_filter['is'])) $ext_filter['is'] = [$ext_filter['is']];
@@ -260,13 +266,19 @@ class File {
 
 		// filter category
 		if ($this->_validations['categories']) {
+			$categories = $this->_validations['categories'];
+
 			$def_cat_filter = [
 				'is' => [],
 				'not' => [],
 				'message' => '[category: '.$this->category.'] '.$this->_error_messages[self::UPLOAD_ERR_CATEGORY_FILTER]
 			];
 
-			$cat_filter = Util::set_values($def_cat_filter, $this->_validations['categories'], 'is');
+			if (is_array($categories) && is_int(key($categories))) {
+				$categories['is'] = $categories;
+			}
+
+			$cat_filter = Util::set_values($def_cat_filter, $categories, 'is');
 			$this->set_error_message(self::UPLOAD_ERR_CATEGORY_FILTER, $cat_filter['message']);
 
 			if (!is_array($cat_filter['is'])) $cat_filter['is'] = [$cat_filter['is']];
