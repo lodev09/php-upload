@@ -151,8 +151,8 @@ class File {
 	 * @param array $validations validation array
 	 */
 	public function __construct($properties, $validations = []) {
-		$this->_validations = Util::set_values($this->_validations, $validations);
-		$this->_default_properties = Util::set_values($this->_default_properties, $properties);
+		$this->_validations = Util::setValues($this->_validations, $validations);
+		$this->_default_properties = Util::setValues($this->_default_properties, $properties);
 
 		// set this instance's properties from the provided data
 		foreach ($this->_default_properties as $key => $value) {
@@ -219,7 +219,7 @@ class File {
 			'unit' => 'MB',
 			'message' => '[size (kb): '.$this->size.'] '.$this->_error_messages[self::UPLOAD_ERR_SIZE_FILTER]
 		];
-		$size_filter = Util::set_values($def_size_filter, $this->_validations['size'], 'max');
+		$size_filter = Util::setValues($def_size_filter, $this->_validations['size'], 'max');
 		$this->set_error_message(self::UPLOAD_ERR_SIZE_FILTER, $size_filter['message']);
 
 		$get_actual_size = function($size, $unit) {
@@ -253,7 +253,7 @@ class File {
 				$extensions['is'] = $extensions;
 			}
 
-			$ext_filter = Util::set_values($def_ext_filter, $extensions, 'is');
+			$ext_filter = Util::setValues($def_ext_filter, $extensions, 'is');
 			$this->set_error_message(self::UPLOAD_ERR_EXTENSION_FILTER, $ext_filter['message']);
 
 			if (!is_array($ext_filter['is'])) $ext_filter['is'] = [$ext_filter['is']];
@@ -278,7 +278,7 @@ class File {
 				$categories['is'] = $categories;
 			}
 
-			$cat_filter = Util::set_values($def_cat_filter, $categories, 'is');
+			$cat_filter = Util::setValues($def_cat_filter, $categories, 'is');
 			$this->set_error_message(self::UPLOAD_ERR_CATEGORY_FILTER, $cat_filter['message']);
 
 			if (!is_array($cat_filter['is'])) $cat_filter['is'] = [$cat_filter['is']];
