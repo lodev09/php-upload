@@ -13,12 +13,12 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "lodev09/php-util": ">=1.2"
+        "php": ">=7.2",
+        "lodev09/php-util": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "Upload\\": "src/"
+            "Common\\": "src/"
         }
     }
 }

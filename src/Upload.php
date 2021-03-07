@@ -28,7 +28,7 @@
  * SOFTWARE.
  */
 
-namespace Upload;
+namespace Common;
 
 class Upload {
 
@@ -59,7 +59,7 @@ class Upload {
 		$this->_raw = $files_data;
 		if ($this->_raw ) {
 			// check if it's multiple or single file upload
-			if ($this->_is_multiple()) {
+			if ($this->_isMulti()) {
 				foreach ($this->_raw['error'] as $key => $error) {
 					if (!$this->_raw['name'][$key]) continue;
 
@@ -105,7 +105,7 @@ class Upload {
 	 * check if the upload data is multiple or not
 	 * @return boolean true if multiple, otherwise false
 	 */
-	private function _is_multiple() {
+	private function _isMulti() {
 		return is_array($this->_raw['name']);
 	}
 }

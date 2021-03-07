@@ -28,26 +28,21 @@
  * SOFTWARE.
  */
 
-namespace Upload;
+namespace Common;
 
 class Exif {
 
 	private $_file;
 	private $_exif;
 	public function __construct($filename) {
-		$this->_exif = @exif_read_data($filename);
-		if (!$this->_exif) self::_err('Cannot read EXIF data from '.$filename);
+		$this->_exif = exif_read_data($filename);
 	}
 
-	private static function _err($err) {
-		trigger_error($err);
-	}
-
-	public function get_data() {
+	public function getData() {
 		return $this->_exif;
 	}
 
-	public function get_orientation() {
+	public function getOrientation() {
 		$ort = isset($this->_exif['Orientation']) ? $this->_exif['Orientation'] : null;
 		switch($ort) {
 			case 1: // nothing
@@ -80,7 +75,7 @@ class Exif {
 		}
 	}
 
-	public function get_gps() {
+	public function getGps() {
 		if (!isset($this->_exif['GPSLatitude']) || !isset($this->_exif['GPSLongitude']))
 			return false;
 

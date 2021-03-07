@@ -28,8 +28,7 @@
  * SOFTWARE.
  */
 
-namespace Upload;
-use \Common\Util;
+namespace Common;
 
 class File {
 
@@ -160,7 +159,7 @@ class File {
 		}
 
 		// get the file info and add them as this instance's properties
-		$info = $this->get_info();
+		$info = $this->getInfo();
 		foreach ($info as $key => $info) {
 			$this->{$key} = $info;
 		}
@@ -184,7 +183,7 @@ class File {
 	 * @param  boolean $return_str should it return an string or array
 	 * @return string/array        returns the error string or errors array
 	 */
-	public function get_error($return_str = true) {
+	public function getError($return_str = true) {
 		$messages = $this->_error_messages;
 		$errors = array_map(function($error) use ($messages) {
 			if (isset($messages[$error])) return $messages[$error];
@@ -302,7 +301,7 @@ class File {
 		return !$this->_errors;
 	}
 
-	private function _init_exif() {
+	private function _initExif() {
 		if (!$this->_exif) {
 			switch ($this->extension) {
 				case '.jpg':
@@ -318,17 +317,17 @@ class File {
 	 * get the exif GPS data (if the file is an image)
 	 * @return array array of lat/lng if success, otherwise false
 	 */
-	public function get_exif_gps() {
-		$this->_init_exif();
-		return $this->_exif ? $this->_exif->get_gps() : false;
+	public function getExifGps() {
+		$this->_initExif();
+		return $this->_exif ? $this->_exif->getGps() : false;
 	}
 
 	/**
 	 * get the exif data (if the file is an image)
 	 * @return array array of exif info if success, otherwise false
 	 */
-	public function get_exif() {
-		$this->_init_exif();
+	public function getExif() {
+		$this->_initExif();
 		return $this->_exif ? $this->_exif->get_data() : false;
 	}
 
@@ -345,7 +344,7 @@ class File {
 	 * get the file info evaluated from the $name property
 	 * @return array  file info
 	 */
-	public function get_info() {
+	public function getInfo() {
 		preg_match('/\.[^\.]+$/i', $this->name, $ext);
 		preg_match('/\.\w+/i', isset($ext[0]) ? $ext[0] : '', $ext);
 
@@ -429,8 +428,8 @@ class File {
 	 * get base64_encode of the file
 	 * @return string base64 encoded string
 	 */
-	public function get_base64() {
-		$content = $this->get_contents();
+	public function getBase64() {
+		$content = $this->getContents();
 		return $content ? base64_encode($content) : false;
 	}
 
@@ -438,7 +437,7 @@ class File {
 	 * get contents
 	 * @return string content
 	 */
-	public function get_contents() {
+	public function getContents() {
 		return file_get_contents($this->tmp_name);
 	}
 
@@ -446,7 +445,7 @@ class File {
 	 * format the size of the file to a readable string
 	 * @return string formatted file size
 	 */
-	public function format_size() {
+	public function formatSize() {
 		$bytes = $this->size;
 
         if ($bytes >= 1073741824) {
