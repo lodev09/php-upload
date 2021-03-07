@@ -131,14 +131,14 @@ class File {
 	 * @var array
 	 */
 	private $_error_messages = [
-		UPLOAD_ERR_OK => 'There is no error, the file uploaded with success.',
-		UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the maximum upload size allowed by the server.',
-		UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
-		UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded.',
-		UPLOAD_ERR_NO_FILE => 'No file was uploaded.',
-		UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder. Introduced in PHP 4.3.10 and PHP 5.0.3.',
-		UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk. Introduced in PHP 5.1.0.',
-		UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop;examining the list of loaded extensions with phpinfo() may help. Introduced in PHP 5.2.0.',
+		UPLOAD_ERR_OK => 'There is no error, the file uploaded with success',
+		UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the maximum upload size allowed by the server',
+		UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+		UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded',
+		UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+		UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder',
+		UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+		UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload',
 		self::UPLOAD_ERR_EXTENSION_FILTER => 'File type not allowed',
 		self::UPLOAD_ERR_CATEGORY_FILTER => 'File not allowed',
 		self::UPLOAD_ERR_SIZE_FILTER => 'File size not allowed'
@@ -190,7 +190,7 @@ class File {
 			else return is_int($error) ? 'Unknown File Error' : $error;
 
 		}, $this->_errors);
-		return $return_str ? implode('; ', $errors) : $errors;
+		return $return_str ? implode('. ', $errors) : $errors;
 	}
 
 	/**
