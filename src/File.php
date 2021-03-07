@@ -198,7 +198,7 @@ class File {
 	 * @param int $error_num 	error type
 	 * @param string $message   error message
 	 */
-	public function set_error_message($error_num, $message = '') {
+	public function setErrorMessage($error_num, $message = '') {
 		$this->_error_messages[$error_num] = $message;
 	}
 
@@ -219,7 +219,7 @@ class File {
 			'message' => '[size (kb): '.$this->size.'] '.$this->_error_messages[self::UPLOAD_ERR_SIZE_FILTER]
 		];
 		$size_filter = Util::setValues($def_size_filter, $this->_validations['size'], 'max');
-		$this->set_error_message(self::UPLOAD_ERR_SIZE_FILTER, $size_filter['message']);
+		$this->setErrorMessage(self::UPLOAD_ERR_SIZE_FILTER, $size_filter['message']);
 
 		$get_actual_size = function($size, $unit) {
 			switch (strtolower($unit)) {
@@ -253,12 +253,12 @@ class File {
 			}
 
 			$ext_filter = Util::setValues($def_ext_filter, $extensions, 'is');
-			$this->set_error_message(self::UPLOAD_ERR_EXTENSION_FILTER, $ext_filter['message']);
+			$this->setErrorMessage(self::UPLOAD_ERR_EXTENSION_FILTER, $ext_filter['message']);
 
 			if (!is_array($ext_filter['is'])) $ext_filter['is'] = [$ext_filter['is']];
 			if (!is_array($ext_filter['not'])) $ext_filter['not'] = [$ext_filter['not']];
 
-			if (!in_array($this->extension, $ext_filter['is']) || ($ext_filter['not'] && in_array($this->extension, $ext_filter['not'])))
+			if (!in_array(strtolower($this->extension), $ext_filter['is']) || ($ext_filter['not'] && in_array(strtolower($this->extension), $ext_filter['not'])))
 				$this->_errors[] = self::UPLOAD_ERR_EXTENSION_FILTER;
 		}
 
@@ -278,7 +278,7 @@ class File {
 			}
 
 			$cat_filter = Util::setValues($def_cat_filter, $categories, 'is');
-			$this->set_error_message(self::UPLOAD_ERR_CATEGORY_FILTER, $cat_filter['message']);
+			$this->setErrorMessage(self::UPLOAD_ERR_CATEGORY_FILTER, $cat_filter['message']);
 
 			if (!is_array($cat_filter['is'])) $cat_filter['is'] = [$cat_filter['is']];
 			if (!is_array($cat_filter['not'])) $cat_filter['not'] = [$cat_filter['not']];
@@ -303,7 +303,7 @@ class File {
 
 	private function _initExif() {
 		if (!$this->_exif) {
-			switch ($this->extension) {
+			switch (strtolower($this->extension)) {
 				case '.jpg':
 				case '.jpeg':
 				case '.tiff':
