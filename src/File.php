@@ -358,6 +358,7 @@ class File {
             case '.docx':
             case '.xls':
             case '.xlsx':
+            case '.csv':
                 $category = 'document';
                 break;
             case '.png':
